@@ -1,18 +1,19 @@
 window.onload = function () {
         
-    var dps = []; // dataPoints
-    var dps2 = []; // dataPoints
+    //var dps = []; // dataPoints
+    //var dps2 = []; // dataPoints
+    console.log(tempData);
     var chart = new CanvasJS.Chart("chartContainer", {
         title :{
             text: "Temperature"
         },
         data: [{
             type: "line",
-            dataPoints: dps
+            dataPoints: tempData
         }]
     });
     
-    var chart2 = new CanvasJS.Chart("chartContainer2", {
+   /* var chart2 = new CanvasJS.Chart("chartContainer2", {
         title :{
             text: "Temperature2"
         },
@@ -20,7 +21,7 @@ window.onload = function () {
             type: "line",
             dataPoints: dps2
         }]
-    });
+    });*/
     var xVal = 0;
     var yVal = 100; 
     var updateInterval = 1000;
@@ -30,7 +31,7 @@ window.onload = function () {
     
         count = count || 1;
     
-        for (var j = 0; j < count; j++) {
+        /*for (var j = 0; j < count; j++) {
             yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
             dps.push({
                 x: xVal,
@@ -41,17 +42,17 @@ window.onload = function () {
                 y: yVal
             });
             xVal++;
-        }
+        }*/
     
-        if (dps.length > dataLength) {
-            dps.shift();
-        }
+        /*if (tempData.length > dataLength) {
+            tempData.shift();
+        }*/
     
         chart.render();
-        chart2.render();
+        //chart2.render();
     };
     
-    updateChart(dataLength);
+    //updateChart(dataLength);
     setInterval(function(){updateChart()}, updateInterval);
     
     }

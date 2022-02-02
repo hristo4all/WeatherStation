@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="../static/main.css">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-    <script type="text/javascript" src="../static/charts.js"></script>
+
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
     <script type="text/javascript" charset="utf-8">
@@ -19,6 +19,9 @@
             // Use weather namespace.
             namespace = '/Weather';
 
+            var tempData = [];
+            var currTemp = null;
+            var time = null;
             // Connect to the Socket.IO server.
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
 
@@ -31,15 +34,94 @@
 
             // Event handler for server sent data.
             socket.on('my_response', function(msg) {
-                $('#Temperature').text(msg.T);
-                $('#Pressure').text(msg.P);
+                $('#Temperature').text(msg.T +'C');
+                $('#Pressure').text(msg.P +'hPa');
                 $('#Humidity').text(msg.H);
                 $('#Time').text(msg.S);
+                
+
+                
+                const today = new Date(msg.S);
+                let hour = today.getHours();
+                let minutes = today.getMinutes();
+                //const d = new Date();
+                //et hour = d.getHours();
+                //console.log(hour);
+
+
+                var a = `${hour}.${minutes}`;
+
+                var parsed = parseFloat(a);
+
+                console.log(parsed);
+
+
+                if(isNaN(msg.S) && msg.T != "Reading..."){
+                    
+                    currTemp = parseFloat(msg.T);
+                    $('#Test').text(currTemp);
+                    tempData.push({
+                        x:parsed,
+                        y:currTemp
+                    })
+
+                }
+                //onsole.log(msg.T);
+                //console.log(msg.P);
+                //console.log(msg.H);
+                //console.log(msg.S);
+                //console.log(tempData);
+                //currTemp= msg.T;
+                
+                //tempData.push(currTemp);
+                //console.log(tempData);
             });
 
+            var xVal = 0;
+            var yVal = 100; 
+            var updateInterval = 2000;
+            var dataLength = 5; // number of dataPoints visible at any point
+            //var dps = [];
+            //console.log(dps)
 
+            var chart = new CanvasJS.Chart("chartContainer", {
+                title :{
+                    text: "Temperature"
+                },
+                data: [{
+                    type: "line",
+                    dataPoints: tempData
+                }]
+            });
+ 
+            var updateChart = function (count) {
+    
+                count = count || 1;
+    
+                /*for (var j = 0; j < count; j++) {
+                    yVal = yVal +  Math.round(5 + Math.random() *(-5-5));
+                    dps.push({
+                        x: xVal,
+                        y: yVal
+                    });
+         
+                    xVal++;
+                    console.log(dps)
+                }*/
+            
+                if (tempData.length > dataLength) {
+                    tempData.shift();
+                }
+            
+                chart.render();
+                //chart2.render();
+            };
+            updateChart(dataLength);
+            setInterval(function(){updateChart()}, updateInterval);
+            
+         
 
-        });
+        });// end of function onload
     </script>
 </head>
 
@@ -77,6 +159,13 @@
                 <div class="wrapper">
                     <p class="label">Time</p>
                     <p id="Time"></p>
+                </div>
+            </div>
+            <div class="card">  
+                <i class=" wi wi-time-5"></i>
+                <div class="wrapper">
+                    <p class="label">Test</p>
+                    <p id="Test"></p>
                 </div>
             </div>
 

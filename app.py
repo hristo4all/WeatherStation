@@ -52,6 +52,7 @@ def WriteToFile_thread():
         if Temperature and Humidity and Pressure !=0:
             writeMeasurementsToJSON(currentMeasurements)
             print("##########-Writing to File-##########")
+       
     
 
 
@@ -87,7 +88,7 @@ def background_thread():#Defining the thread fucntion to read and update sensor 
         ReadSensorValues()
         
         socketio.emit('my_response',
-                      {'data': 'Server generated event','T' : '{0:.2f}C'.format(sensor.get_temperature()), 'P' : '{0:.2f}hPa'.format(sensor.get_pressure()),
+                      {'data': 'Server generated event','T' : '{0:.2f}'.format(sensor.get_temperature()), 'P' : '{0:.2f}'.format(sensor.get_pressure()),
                        'H' : '{0:.2f}%RH'.format(sensor.get_humidity()),'S':ServerTime},
                       namespace='/Weather')#Send the sensor data and date to the server as messages T for temperature etc.
                       
@@ -121,9 +122,9 @@ def test_connect():
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(target=background_thread)# connect and start background_thread
-            threadWriting = Thread(target = WriteToFile_thread)#initiate a new thread 
-            threadWriting.setDaemon(True) # make the thread deamonic i.e makes the thread run at the background until the main thread is terminated
-            threadWriting.start()
+            #threadWriting = Thread(target = WriteToFile_thread)#initiate a new thread 
+            #threadWriting.setDaemon(True) # make the thread deamonic i.e makes the thread run at the background until the main thread is terminated
+            #threadWriting.start()
     emit('my_response', {'data': 'Connected','T':'Reading...','P':'Reading...','H':'Reading...','S':'Starting...'})#To be displayed when the server is loaded
     
     
