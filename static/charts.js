@@ -1,5 +1,9 @@
 window.onload = function () {
+
+    
     const ctx = document.getElementById('myChart');
+    
+
     var dataSet = [12,30,21];
     var dataSet2 = [10,20,30];
     const myChart = new Chart(ctx, {
