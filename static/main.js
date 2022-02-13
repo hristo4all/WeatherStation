@@ -1,30 +1,3 @@
-
-$(document).ready(function() {
-    // Use weather namespace.
-    namespace = '/Weather';
-
-    // Connect to the Socket.IO server.
-    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
-
-    // Event handler for new connections.
-    socket.on('connect', function() {
-        socket.emit('my_event', {
-            data: 'I\'m connected!'
-        });
-    });
-
-    // Event handler for server sent data.
-    socket.on('my_response', function(msg) {
-        $('#Temperature').text(msg.T);
-        $('#Pressure').text(msg.P);
-        $('#Humidity').text(msg.H);
-        $('#Time').text(msg.S);
-    });
-
-
-
-});
-
 function toggleView() {
 
     var Cardelems = document.querySelectorAll('div.card');
@@ -42,7 +15,7 @@ function toggleView() {
         }
     }   
     else{
-    
+
         for(var i = 0;i < Cardelems.length; i++)
         {
             Cardelems[i].style.display = 'none';

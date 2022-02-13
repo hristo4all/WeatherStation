@@ -77,6 +77,9 @@ def ReadSensorValues():# this function will read the data from the sensors and t
     Pressure = sensor.get_pressure()
     Humidity = sensor.get_humidity()
     ServerTime = time.strftime('%d-%m-%Y %H:%M:%S')#Getting the server time with format
+    #print(Temperature)
+    #print(Pressure)
+    #print(Humidity)
     return
 
 

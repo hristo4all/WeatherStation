@@ -8,17 +8,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../static/weather-icons-master/css/weather-icons.css">
     <link rel="stylesheet" href="../static/main.css">
-    
-    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
-
-    
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    <script type="text/javascript" src="../static/charts.js"></script>
-    <script type="text/javascript" src="../static/main.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     
+   <script type="text/javascript" src="../static/main.js"></script>
     
+    <script>
+        $(document).ready(function() {
+
+
+            // Use weather namespace.
+            namespace = '/Weather';
+            var dataSet = [];
+            var dataSet2 = [];
+
+            // Connect to the Socket.IO server.
+            var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
+
+            // Event handler for new connections.
+            socket.on('connect', function() {
+                socket.emit('my_event', {
+                    data: 'I\'m connected!'
+                });
+            });
+
+            // Event handler for server sent data.
+            socket.on('my_response', function(msg) {
+                $('#Temperature').text(msg.T);
+                $('#Pressure').text(msg.P);
+                $('#Humidity').text(msg.H);
+                $('#Time').text(msg.S);
+
+                dataSet.push(msg.T);
+                dataSet2.push(msg.S);
+            });
+
+
+            const ctx = document.getElementById('myChart');
+           // console.log(dataSet);
+
+            
+            const myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dataSet2,
+                    datasets: [{
+                        label: 'Temperature',
+                        data: dataSet,
+                        backgroundColor: [
+                            '#def6c4',
+
+                        ],
+                        borderColor: [
+
+                            '#def6c4'
+                        ],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        },
+                        x:{
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        }
+                    },
+                    plugins: {
+                        
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#91a180',
+                                // This more specific font property overrides the global property
+                                font: {
+                                    size: 20,
+                                    
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                }
+            });
+
+            var updateInterval = 2000;
+
+            function updateChart(count){
+
+                if (dataSet.length > count) {
+
+                    console.log("time to delete");
+
+                    dataSet.shift();
+                    dataSet2.shift();
+                    myChart.data.labels.shift();
+                    myChart.data.datasets.forEach((dataset) => {
+                        dataset.data.shift();
+                    });
+                    myChart.update();
+                   
+                }
+                console.log(dataSet);
+                console.log("dataset1 popped: "+ dataSet.pop());
+                console.log("dataset2 popped: "+ dataSet2.pop());
+
+                myChart.data.labels.push(dataSet2.pop());
+                myChart.data.datasets.forEach((dataset) => {
+                    dataset.data.push(dataSet.pop());
+                });
+
+                myChart.update();
+            }
+
+            updateChart(10);
+            setInterval(function(){updateChart()}, updateInterval);    
+
+
+            
+        });
+    </script>
 
 </head>
 
@@ -42,21 +160,21 @@
                 <i class=" wi wi-thermometer"></i>
                 <div class="wrapper">
                     <p class="label">Temperature</p>
-                    <p id="Temperature">26.7C</p>
+                    <p id="Temperature"></p>
                 </div>
             </div>
             <div class="card" id="card">  
                 <i class=" wi wi-barometer"></i>
                 <div class="wrapper">
                     <p class="label">Pressure</p>
-                    <p id="Pressure">989.01PSI</p>
+                    <p id="Pressure"></p>
                 </div>
             </div>
             <div class="card" id="card">  
                 <i class=" wi wi-humidity"></i>
                 <div class="wrapper">
                     <p class="label">Humidity</p>
-                    <p id="Humidity">26.7%</p>
+                    <p id="Humidity"></p>
                 </div>
             </div>
             <div class="card" id="card">  
