@@ -20,7 +20,7 @@ Pressure = "No sensor data!"
 Humidity = "No sensor data!"
 NewDate = 0
 CurrentDate = 0
-ServerTime = time.strftime('%d-%m-%Y %H:%M:%S')
+ServerTime = time.strftime('%Y-%m-%d %H:%M:%S')
 
 currentMeasurements = {
                "temperature":"0",
@@ -76,7 +76,7 @@ def ReadSensorValues():# this function will read the data from the sensors and t
     Temperature =sensor.get_temperature()
     Pressure = sensor.get_pressure()
     Humidity = sensor.get_humidity()
-    ServerTime = time.strftime('%d-%m-%Y %H:%M:%S')#Getting the server time with format
+    ServerTime = time.strftime('%Y-%m-%d %H:%M:%S')#Getting the server time with format
     #print(Temperature)
     #print(Pressure)
     #print(Humidity)
@@ -136,6 +136,6 @@ def test_connect():
 if __name__ == '__main__':#Run server
     socketio.run(app, debug=True)
     #threadWriting.join()
-    print("writing thread finished...exiting")
+    print("Server Stopped...")
 
     

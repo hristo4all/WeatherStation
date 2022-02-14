@@ -20,6 +20,7 @@
 
             // Use weather namespace.
             namespace = '/Weather';
+
             var dataSet = [];
             var dataSet2 = [];
 
@@ -40,8 +41,21 @@
                 $('#Humidity').text(msg.H);
                 $('#Time').text(msg.S);
 
-                dataSet.push(msg.T);
-                dataSet2.push(msg.S);
+                var today =  new Date(msg.S);
+                //console.log(today.getMinutes());
+                if(msg.S && Object.prototype.toString.call(today) === "[object Date]" && !isNaN(today) && today != "Starting...")
+                {
+                    //console.log(msg.S);
+                    dataSet.push(msg.T);
+                    //console.log(today);
+                    dataSet2.push(`${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`);
+                }
+                else{
+
+                }
+                
+
+
             });
 
 
@@ -107,7 +121,7 @@
 
                 if (dataSet.length > count) {
 
-                    console.log("time to delete");
+                    //console.log("time to delete");
 
                     dataSet.shift();
                     dataSet2.shift();
@@ -118,9 +132,9 @@
                     myChart.update();
                    
                 }
-                console.log(dataSet);
-                console.log("dataset1 popped: "+ dataSet.pop());
-                console.log("dataset2 popped: "+ dataSet2.pop());
+                //console.log(dataSet);
+                //console.log("dataset1 popped: "+ dataSet.pop());
+                //console.log("dataset2 popped: "+ dataSet2.pop());
 
                 myChart.data.labels.push(dataSet2.pop());
                 myChart.data.datasets.forEach((dataset) => {
@@ -130,8 +144,8 @@
                 myChart.update();
             }
 
-            updateChart(10);
-            setInterval(function(){updateChart()}, updateInterval);    
+
+            setInterval(function(){updateChart(10)}, updateInterval);    
 
 
             
@@ -181,7 +195,7 @@
                 <i class=" wi wi-time-5"></i>
                 <div class="wrapper">
                     <p class="label">Time</p>
-                    <p id="Time">01-02-2022 18:10:33</p>
+                    <p id="Time"></p>
                 </div>
             </div>
             <div class="chartWrapper">
