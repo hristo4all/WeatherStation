@@ -103,7 +103,7 @@ i{
 #Humidity{
     font-size: 2rem;
     padding-left: 1rem;
-    margin: 1rem;
+    margin: 2rem;
     color: var(--readings);
 }
 #Pressure{
@@ -143,8 +143,8 @@ i{
 }
 
 #myChart{
-    width: 30rem;
-    height: 20rem;
+    width: 40rem;
+    height: 30rem;
     position: relative;
     flex: 1;
     background-color: var(--body);
@@ -154,8 +154,8 @@ i{
     
 }
 .chartWrapper{
-    width: 20rem;
-    height: 15rem;
+    width: 40rem;
+    height: 30rem;
     display: none;
     margin: 1rem;
 }

@@ -92,7 +92,7 @@ def background_thread():#Defining the thread fucntion to read and update sensor 
         
         socketio.emit('my_response',
                       {'data': 'Server generated event','T' : '{0:.2f}'.format(sensor.get_temperature()), 'P' : '{0:.2f}'.format(sensor.get_pressure()),
-                       'H' : '{0:.2f}%RH'.format(sensor.get_humidity()),'S':ServerTime},
+                       'H' : '{0:.2f}'.format(sensor.get_humidity()),'S':ServerTime},
                       namespace='/Weather')#Send the sensor data and date to the server as messages T for temperature etc.
                       
 

@@ -36,9 +36,9 @@
 
             // Event handler for server sent data.
             socket.on('my_response', function(msg) {
-                $('#Temperature').text(msg.T);
-                $('#Pressure').text(msg.P);
-                $('#Humidity').text(msg.H);
+                $('#Temperature').text(`${msg.T}C`);
+                $('#Pressure').text(`${msg.P}PSI`);
+                $('#Humidity').text(`${msg.H}%RH`);
                 $('#Time').text(msg.S);
 
                 var today =  new Date(msg.S);
