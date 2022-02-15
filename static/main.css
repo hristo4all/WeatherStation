@@ -96,20 +96,20 @@ i{
 #Temperature{
     font-size: 2rem;
     padding-left: 1rem;
-    margin: 1rem;
+    margin: 0.2rem;
     color: var(--readings);
    
 }
 #Humidity{
     font-size: 2rem;
     padding-left: 1rem;
-    margin: 2rem;
+    margin: 0.2rem;
     color: var(--readings);
 }
 #Pressure{
     font-size: 2rem;
     padding-left: 0.1rem;
-    margin: 1rem;
+    margin: 0.2rem;
     color: var(--readings);
 }
 #Time{
@@ -143,8 +143,8 @@ i{
 }
 
 #myChart{
-    width: 40rem;
-    height: 30rem;
+    width: 30rem;
+    height: 20rem;
     position: relative;
     flex: 1;
     background-color: var(--body);
@@ -154,8 +154,8 @@ i{
     
 }
 .chartWrapper{
-    width: 40rem;
-    height: 30rem;
+    width: 30rem;
+    height: 20rem;
     display: none;
     margin: 1rem;
 }
@@ -249,6 +249,9 @@ i{
     .currentMeasurements{
        
         max-width: 21rem;
+    }
+    .chartWrapper{
+        max-width: 20rem;
     }
 }
 @media  screen and  (max-width: 1650px) {
