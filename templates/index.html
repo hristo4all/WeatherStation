@@ -21,7 +21,9 @@
             // Use weather namespace.
             namespace = '/Weather';
 
-            var dataSet = [];
+            var dataSetTemperature = [];
+            var dataSetPressure = [];
+            var dataSetHumidity = [];
             var dataSet2 = [];
 
             // Connect to the Socket.IO server.
@@ -46,7 +48,9 @@
                 if(msg.S && Object.prototype.toString.call(today) === "[object Date]" && !isNaN(today) && today != "Starting...")
                 {
                     //console.log(msg.S);
-                    dataSet.push(msg.T);
+                    dataSetTemperature.push(msg.T);
+                    dataSetPressure.push(msg.P);
+                    dataSetHumidity.push(msg.H);
                     //console.log(today);
                     dataSet2.push(`${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`);
                 }
@@ -59,17 +63,18 @@
             });
 
 
-            const ctx = document.getElementById('myChart');
-           // console.log(dataSet);
+            const tempChartElement = document.getElementById('tempChart');
+            const pressureChartElement = document.getElementById('pressureChart');
+            const humidityChartElement = document.getElementById('humidityChart');
 
             
-            const myChart = new Chart(ctx, {
+            const tempChart = new Chart(tempChartElement, {
                 type: 'line',
                 data: {
                     labels: dataSet2,
                     datasets: [{
                         label: 'Temperature',
-                        data: dataSet,
+                        data: dataSetTemperature,
                         backgroundColor: [
                             '#def6c4',
 
@@ -115,33 +120,163 @@
                 }
             });
 
+            const pressureChart = new Chart(pressureChartElement, {
+                type: 'line',
+                data: {
+                    labels: dataSet2,
+                    datasets: [{
+                        label: 'Pressure',
+                        data: dataSetPressure,
+                        backgroundColor: [
+                            '#def6c4',
+
+                        ],
+                        borderColor: [
+
+                            '#def6c4'
+                        ],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        },
+                        x:{
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        }
+                    },
+                    plugins: {
+                        
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#91a180',
+                                // This more specific font property overrides the global property
+                                font: {
+                                    size: 20,
+                                    
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                }
+            });
+
+            const humidityChart = new Chart(humidityChartElement, {
+                type: 'line',
+                data: {
+                    labels: dataSet2,
+                    datasets: [{
+                        label: 'Humidity',
+                        data: dataSetHumidity,
+                        backgroundColor: [
+                            '#def6c4',
+
+                        ],
+                        borderColor: [
+
+                            '#def6c4'
+                        ],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        },
+                        x:{
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        }
+                    },
+                    plugins: {
+                        
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#91a180',
+                                // This more specific font property overrides the global property
+                                font: {
+                                    size: 20,
+                                    
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                }
+            });
+            
             var updateInterval = 2000;
 
             function updateChart(count){
 
-                if (dataSet.length > count) {
+                if (dataSetTemperature.length > count) {
 
                     //console.log("time to delete");
 
-                    dataSet.shift();
+                    dataSetTemperature.shift();
+                    dataSetPressure.shift();
+                    dataSetHumidity.shift();
                     dataSet2.shift();
-                    myChart.data.labels.shift();
-                    myChart.data.datasets.forEach((dataset) => {
-                        dataset.data.shift();
+
+                    tempChart.data.labels.shift();
+                    tempChart.data.datasets.forEach((dataSetTemperature) => {
+                        dataSetTemperature.data.shift();
                     });
-                    myChart.update();
+
+                    pressureChart.data.labels.shift();
+                    pressureChart.data.datasets.forEach((dataSetPressure) => {
+                        dataSetPressure.data.shift();
+                    });
+
+                    humidityChart.data.labels.shift();
+                    humidityChart.data.datasets.forEach((dataSetHumidity) => {
+                        dataSetHumidity.data.shift();
+                    });
+            
+            
                    
                 }
                 //console.log(dataSet);
                 //console.log("dataset1 popped: "+ dataSet.pop());
                 //console.log("dataset2 popped: "+ dataSet2.pop());
 
-                myChart.data.labels.push(dataSet2.pop());
-                myChart.data.datasets.forEach((dataset) => {
-                    dataset.data.push(dataSet.pop());
+                tempChart.data.labels.push(dataSet2.pop());
+                tempChart.data.datasets.forEach((dataset) => {
+                    dataset.data.push(dataSetTemperature.pop());
                 });
 
-                myChart.update();
+                pressureChart.data.labels.push(dataSet2.pop());
+                pressureChart.data.datasets.forEach((dataset) => {
+                    dataset.data.push(dataSetPressure.pop());
+                });
+
+                humidityChart.data.labels.push(dataSet2.pop());
+                humidityChart.data.datasets.forEach((dataset) => {
+                    dataset.data.push(dataSetHumidity.pop());
+                });
+
+                tempChart.update();
+                pressureChart.update();
+                humidityChart.update();
             }
 
 
@@ -199,7 +334,13 @@
                 </div>
             </div>
             <div class="chartWrapper">
-                <canvas id="myChart"></canvas>
+                <canvas id="tempChart" class="chart"></canvas>
+            </div>
+            <div class="chartWrapper">
+                <canvas id="pressureChart" class="chart"></canvas>
+            </div>
+            <div class="chartWrapper">
+                <canvas id="humidityChart" class="chart"></canvas>
             </div>
             
         </div>

@@ -142,7 +142,8 @@ i{
     
 }
 
-#myChart{
+
+.chart{
     width: 30rem;
     height: 20rem;
     position: relative;
@@ -159,9 +160,10 @@ i{
     display: none;
     margin: 1rem;
 }
-#myChart:hover{
+.chart:hover{
     border: 5px solid #a191f9;
 }
+
 
 .switch {
     position: relative;
