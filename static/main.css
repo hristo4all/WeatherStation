@@ -144,8 +144,8 @@ i{
 
 
 .chart{
-    width: 30rem;
-    height: 20rem;
+    width: 20rem;
+    height: 10rem;
     position: relative;
     flex: 1;
     background-color: var(--body);
@@ -155,8 +155,8 @@ i{
     
 }
 .chartWrapper{
-    width: 30rem;
-    height: 20rem;
+    width: 20rem;
+    height: 10rem;
     display: none;
     margin: 1rem;
 }
