@@ -26,7 +26,25 @@
             var dataSetHumidity = [];
             var dataSet2 = [];
 
-            //console.log(content)
+            var historicTemp = [];
+            var historicPressure = [];
+            var historicHumidity = []; 
+            var dateSpan = [];
+            var historicData = JSON.parse('{{content | tojson | safe}}');// perform a check if the file loaded 
+            //console.log(historicData);
+            var data = historicData[0];
+            console.log(data)
+            //console.log(data.length);
+            //console.log(data.measurements[0].date);
+            for(i=0;i<data.measurements.length;i++){
+                dateSpan.push(data.measurements[i].date);
+                historicTemp.push(data.measurements[i].temperature);
+                historicPressure.push(data.measurements[i].pressure);
+                historicHumidity.push(data.measurements[i].humidity);
+            }
+            //console.log(historicTemp);
+
+            
             // Connect to the Socket.IO server.
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
 
@@ -68,6 +86,9 @@
             const pressureChartElement = document.getElementById('pressureChart');
             const humidityChartElement = document.getElementById('humidityChart');
 
+            const historicTempChartElement = document.getElementById('historicTempChart');
+            const historicPressureChartElement = document.getElementById('historicPressureChart');
+            const historicHumidityChartElement = document.getElementById('historicHumidityChart');
             
             const tempChart = new Chart(tempChartElement, {
                 type: 'line',
@@ -225,6 +246,165 @@
                 }
             });
             
+            const historicTempChart = new Chart(historicTempChartElement, {
+                type: 'line',
+                data: {
+                    labels: dateSpan,
+                    datasets: [{
+                        label: 'Historic Temperature',
+                        data: historicTemp,
+                        backgroundColor: [
+                            '#def6c4',
+
+                        ],
+                        borderColor: [
+
+                            '#454c3d'
+                        ],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        },
+                        x:{
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        }
+                    },
+                    plugins: {
+                        
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#91a180',
+                                // This more specific font property overrides the global property
+                                font: {
+                                    size: 20,
+                                    
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                }
+            });
+
+            const historicHumidityChart = new Chart(historicHumidityChartElement, {
+                type: 'line',
+                data: {
+                    labels: dateSpan,
+                    datasets: [{
+                        label: 'Historic Humidity',
+                        data: historicHumidity,
+                        backgroundColor: [
+                            '#def6c4',
+
+                        ],
+                        borderColor: [
+
+                            '#454c3d'
+                        ],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        },
+                        x:{
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        }
+                    },
+                    plugins: {
+                        
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#91a180',
+                                // This more specific font property overrides the global property
+                                font: {
+                                    size: 20,
+                                    
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                }
+            });
+
+            const historicPressureChart = new Chart(historicPressureChartElement, {
+                type: 'line',
+                data: {
+                    labels: dateSpan,
+                    datasets: [{
+                        label: 'Historic Pressure',
+                        data: historicPressure,
+                        backgroundColor: [
+                            '#def6c4',
+
+                        ],
+                        borderColor: [
+
+                            '#454c3d'
+                        ],
+                        borderWidth: 1,
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        },
+                        x:{
+                            beginAtZero: true,
+                            ticks:{
+                                color: '#def6c4',
+                            }
+                        }
+                    },
+                    plugins: {
+                        
+                        legend: {
+                            display: true,
+                            labels: {
+                                color: '#91a180',
+                                // This more specific font property overrides the global property
+                                font: {
+                                    size: 20,
+                                    
+                                }
+                            }
+                        }
+                    }
+                    
+                    
+                }
+            });
+
+            
+
+
             var updateInterval = 2000;
 
             function updateChart(count){
@@ -351,9 +531,15 @@
         </div>
         <!-------------------------end of info------------------------------------------------------------------------->
         <div class="historicMeasurements">
-            <p>
-                {{content}}
-            </p>
+                <div class="historicChartWrapper">
+                    <canvas id="historicTempChart" class="historicChart"></canvas>
+                </div>
+                <div class="historicChartWrapper">
+                    <canvas id="historicPressureChart" class="historicChart"></canvas>
+                </div>
+                <div class="historicChartWrapper">
+                    <canvas id="historicHumidityChart" class="historicChart"></canvas>
+                </div>
         </div>
         <!-------------------------historicMeasurements------------------------------------------------------------------------->
     </div><!---end of container -->

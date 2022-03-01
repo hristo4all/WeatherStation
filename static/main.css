@@ -42,8 +42,12 @@ body{
     border-radius: 17px;
 }
 .historicMeasurements{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    justify-items: center;
     width: 80rem;
-    height: 50rem;
+    height: 100rem;
     margin-top: 2rem;
     background-color: var(--bg_secondary);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -155,11 +159,28 @@ i{
     
 }
 .chartWrapper{
-    width: 20rem;
-    height: 10rem;
+    width: 40rem;
+    height: 30rem;
     display: none;
     margin: 1rem;
 }
+
+.historicChart{
+    width: 60rem;
+    height: 30rem;
+    flex: 1;
+    background-color: var(--body);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: 5px solid transparent;
+    border-radius: 17px;
+    
+}
+.historicChartWrapper{
+    width: 60rem;
+    height: 30rem;
+    margin: 1rem;
+}
+
 .chart:hover{
     border: 5px solid #a191f9;
 }
