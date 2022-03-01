@@ -26,6 +26,7 @@
             var dataSetHumidity = [];
             var dataSet2 = [];
 
+            //console.log(content)
             // Connect to the Socket.IO server.
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
 
@@ -350,7 +351,9 @@
         </div>
         <!-------------------------end of info------------------------------------------------------------------------->
         <div class="historicMeasurements">
-
+            <p>
+                {{content}}
+            </p>
         </div>
         <!-------------------------historicMeasurements------------------------------------------------------------------------->
     </div><!---end of container -->
