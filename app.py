@@ -1,9 +1,12 @@
 #Importing all the libraries and modules that are required
 import smtplib
+import os.path
 import time
 import json
 from threading import Thread
 from time import sleep
+from datetime import timedelta
+import csv
 try:
     from smbus2 import SMBus
 except ImportError:
@@ -42,15 +45,11 @@ from app import ServerTime
 # creating the write to file thread
 def WriteToFile_thread():
     while True:
-        sleep(20)
-        currentMeasurements = {
-            "temperature":Temperature,
-            "pressure":Pressure,
-            "humidity":Humidity,
-            "date": ServerTime
-            }
+        sleep(1800)
+        #currentMeasurements = {"temperature":Temperature,"pressure":Pressure,"humidity":Humidity,"date": ServerTime}
+
         if Temperature and Humidity and Pressure !=0:
-            writeMeasurementsToJSON(currentMeasurements)
+            writeMeasurementsToFile(Temperature,Pressure,Humidity,ServerTime )
             print("##########-Writing to File-##########")
        
     
@@ -59,6 +58,7 @@ def WriteToFile_thread():
 #Setup of the server
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'HRISTOsecretKey!'
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=5)
 socketio = SocketIO(app, async_mode=async_mode)
 thread = None #Set thread to none
 thread_lock = Lock() #Lock thread
@@ -97,16 +97,32 @@ def background_thread():#Defining the thread fucntion to read and update sensor 
                       
 
 
-def writeMeasurementsToJSON(currentMeasurements, filename='data.json'):
-    with open(filename,'r+') as file:
-          # First we load existing data into a dict.
+def writeMeasurementsToFile(temperature, pressure, humidity,servertime, filename='data.json'):
+    
+    
+    
+    '''with open(filename,'r+') as file:
+        # First we load existing data into a dict.
         file_data = json.load(file)
         # Join currentMeasurements with the existing data inside measurements
         file_data["measurements"].append(currentMeasurements)
         # Sets file's current position at offset.
         file.seek(0)
         # convert back to json.
-        json.dump(file_data, file, indent = 4)
+        json.dump(file_data, file, indent = 4)'''
+    header = ['date','temperature','pressure','humidity']
+    data = [servertime,temperature,pressure,humidity]
+    print(os.path.exists('data.csv'))
+    if(os.path.exists('data.csv')):
+        with open('data.csv', 'a') as f:
+            writer = csv.writer(f)
+            writer.writerow(data)
+    else:
+        with open('data.csv', 'w') as f:
+            writer = csv.writer(f)
+            writer.writerow(header)
+            writer.writerow(data)
+
  
 
 def getJSONfile( filename='data.json'):
@@ -116,6 +132,7 @@ def getJSONfile( filename='data.json'):
 
 @app.route('/')#Enable to use the hmtl page for displaying
 def index():
+    session.permanent = True
     return render_template('index.html', async_mode=socketio.async_mode, content=getJSONfile())
 
 
@@ -126,9 +143,9 @@ def test_connect():
     with thread_lock:
         if thread is None:
             thread = socketio.start_background_task(target=background_thread)# connect and start background_thread
-            #threadWriting = Thread(target = WriteToFile_thread)#initiate a new thread 
-            #threadWriting.setDaemon(True) # make the thread deamonic i.e makes the thread run at the background until the main thread is terminated
-            #threadWriting.start()
+            threadWriting = Thread(target = WriteToFile_thread)#initiate a new thread 
+            threadWriting.setDaemon(True) # make the thread deamonic i.e makes the thread run at the background until the main thread is terminated
+            threadWriting.start()
     emit('my_response', {'data': 'Connected','T':'Reading...','P':'Reading...','H':'Reading...','S':'Starting...'})#To be displayed when the server is loaded
     
     

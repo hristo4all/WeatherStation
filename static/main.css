@@ -1,20 +1,31 @@
-:root{
-    --body:#332E4F;
-    --header:#171423;
-    --bg_secondary:#5c5872;
-    --header_text:#BBCEA8;
-    --readings:#def6c4;
-    --header_secondary:#91a180;
+:root {
+    --body: #332E4F;
+    --header: #171423;
+    --bg_secondary: #5c5872;
+    --header_text: #BBCEA8;
+    --TempReadings: #85FFDE;
+    --TempReadingsTitle: #59aa94;
+    --PressureReadings: #CAA968;
+    --PressureReadingsTitle: #B58E40;
+    --HumidityReadings: #88CFD3;
+    --HumidityReadingsTitle: #42ADB3;
+    --ServerTime: #E2787C;
+    --ServerTimeTitle: #D8464B;
+    --header_secondary: #91a180;
+    --slider: #bba8ce;
 }
-body{
-    background:var(--body);
+
+body {
+    background: var(--body);
 
 }
-.container{
+
+.container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
 }
+
 .header {
     background-color: var(--header);
     text-align: center;
@@ -27,33 +38,60 @@ body{
     padding-top: 2.5rem;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 17px;
-    
+
 }
-.currentMeasurements{
+
+.measurements {
     width: 80rem;
-    height: 50rem;
+    overflow: clip;
     margin-top: 2rem;
     background-color: var(--bg_secondary);
     display: flex;
+    flex-direction: row;
+    flex-flow: row;
     flex-wrap: wrap;
     align-content: flex-start;
     justify-content: space-evenly;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 17px;
 }
-.historicMeasurements{
+
+.chartContainer {
+    padding: 1rem;
     display: flex;
+    flex-direction: column;
+    flex-flow: column;
     flex-wrap: wrap;
-    justify-content: space-evenly;
-    justify-items: center;
-    width: 80rem;
-    height: 100rem;
-    margin-top: 2rem;
-    background-color: var(--bg_secondary);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 17px;
 }
-.info{
+
+.chart {
+
+
+    height: 20rem;
+    width: 40rem;
+    background-color: var(--body);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: 5px solid transparent;
+    border-radius: 17px;
+
+
+}
+
+.tempChart {
+    width: 100%;
+    height: 100%;
+}
+
+.chartWrapper {
+    width: 50rem;
+    padding: 2rem;
+    display: none;
+
+
+}
+
+
+.info {
     width: 20rem;
     height: 30rem;
     margin-top: 2rem;
@@ -62,7 +100,8 @@ body{
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 17px;
 }
-.card{
+
+.card {
     display: flex;
     flex-direction: row;
     background-color: var(--body);
@@ -73,115 +112,126 @@ body{
     border: 5px solid transparent;
     border-radius: 17px;
     flex-basis: 0;
-   
+
 }
-.card:hover{
+
+.card:hover {
     border: 5px solid #a191f9;
 }
 
-i{
+i {
     font-size: 4rem;
     color: var(--header_secondary);
     padding: 1.2rem;
     border-right: 2.5px solid #171423;
     height: 4.9rem;
 }
-.wrapper{
+
+.wrapper {
     padding-left: 1rem;
     color: var(--header_secondary);
-  
+
 }
-.label{
+
+.label {
     font-size: 1.6rem;
     padding-right: 2rem;
     padding-bottom: 3px;
     margin: 1rem;
 }
-#Temperature{
+
+.temp {
+    color: var(--TempReadingsTitle);
+}
+
+.tempPredict {
+    color: #9bccbf;
+}
+
+.pressure {
+    color: var(--PressureReadingsTitle);
+}
+
+.humidity {
+    color: var(--HumidityReadingsTitle);
+}
+
+.time {
+    color: var(--ServerTimeTitle);
+}
+
+#Temperature {
     font-size: 2rem;
     padding-left: 1rem;
     margin: 0.2rem;
-    color: var(--readings);
-   
+    color: var(--TempReadings);
+
 }
-#Humidity{
+
+#Humidity {
     font-size: 2rem;
     padding-left: 1rem;
     margin: 0.2rem;
-    color: var(--readings);
+    color: var(--HumidityReadings);
 }
-#Pressure{
+
+#Pressure {
     font-size: 2rem;
     padding-left: 0.1rem;
     margin: 0.2rem;
-    color: var(--readings);
+    color: var(--PressureReadings);
 }
-#Time{
+
+#Time {
     font-size: 1rem;
     padding-left: 0.1rem;
     margin: 1rem;
-    color: var(--readings);
+    color: var(--ServerTime);
 }
-.curHeader{
-        display: flex;
-        font-size: 2rem;
-        flex-basis: 100%;
-        text-align:center;
-        background-color: var(--header);
-        color: var(--header_text);
-        margin: 0;
-        border-radius: 17px 17px 0px 0px;
-        
+
+.curHeader {
+    display: flex;
+    font-size: 2rem;
+    flex-basis: 100%;
+    text-align: center;
+    background-color: var(--header);
+    color: var(--header_text);
+    margin: 0;
+    border-radius: 17px 17px 0px 0px;
+    max-height: 10rem;
+
 }
-.curHeader h2{
- 
-    width: 70%;
-    
+
+.curHeader h2 {
+    width: 100%;
 }
-.curHeader .switchWrapper{
-   
+
+.curHeader .switchWrapper {
+
     padding: 35px;
     justify-content: center;
     width: 30%;
-    
+
+}
+.predict{
+    display: visible !important;
 }
 
+.historicChart {
 
-.chart{
-    width: 20rem;
-    height: 10rem;
-    position: relative;
-    flex: 1;
     background-color: var(--body);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border: 5px solid transparent;
     border-radius: 17px;
-    
+
 }
-.chartWrapper{
-    width: 40rem;
-    height: 30rem;
-    display: none;
+
+.historicChartWrapper {
+    width: 50rem;
     margin: 1rem;
 }
 
-.historicChart{
-    width: 60rem;
-    height: 30rem;
-    flex: 1;
-    background-color: var(--body);
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border: 5px solid transparent;
-    border-radius: 17px;
-    
-}
-.historicChartWrapper{
-    width: 60rem;
-    height: 30rem;
-    margin: 1rem;
-}
-
-.chart:hover{
+.chart:hover {
     border: 5px solid #a191f9;
 }
 
@@ -191,110 +241,123 @@ i{
     display: inline-block;
     width: 60px;
     height: 34px;
-  }
-  
-  .switch input { 
+}
+
+.switch input {
     opacity: 0;
     width: 0;
     height: 0;
-  }
-  
-  .slider {
+}
+
+.slider {
     position: absolute;
     cursor: pointer;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--bg_secondary);
+    background-color: var(--header_secondary);
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
     position: absolute;
     content: "";
     height: 26px;
     width: 26px;
     left: 4px;
     bottom: 4px;
-    background-color: var(--readings);  /* when toggle switch  is OFF. This is the circle*/
+    background-color: var(--header);
+    /* when toggle switch  is OFF. This is the circle*/
     -webkit-transition: .4s;
     transition: .4s;
-  }
-  
-  input:checked + .slider {
-    background-color: var(--readings); /* when toggle switch  is ON*/
-  }
-  
-  input:focus + .slider {
-    box-shadow: 0 0 1px ;
-  }
-  
-  input:checked + .slider:before {
+}
+
+input:checked+.slider {
+    background-color: var(--header_text);
+    /* when toggle switch  is ON*/
+}
+
+input:focus+.slider {
+    box-shadow: 0 0 1px;
+}
+
+input:checked+.slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
-    background-color: var(--header); /* when toggle switch  is ON. This is the circle*/
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-    border-radius: 34px;
-  }
-  
-  .slider.round:before {
-    border-radius: 50%;
-  }
-  .switchWrapper{
-    margin: 1rem;
-  }
+    background-color: var(--body);
+    /* when toggle switch  is ON. This is the circle*/
+}
 
-@media  screen and  (max-width: 1000px) {
-    .header{
-        
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.switchWrapper {
+    margin: 1rem;
+}
+
+@media screen and (max-width: 1000px) {
+    .header {
+
         padding-top: 2rem;
         height: 8rem;
-        
+
     }
-    .card{
+
+    .card {
         margin: 1rem;
     }
-    .curHeader{
+
+    .curHeader {
         font-size: 1.5rem;
         max-width: 21rem;
-        
+
     }
-    .curHeader h2{
+
+    .curHeader h2 {
         margin: 1rem;
-        
+
     }
-    .currentMeasurements{
-       
+
+    .currentMeasurements {
+
         max-width: 21rem;
     }
-    .chartWrapper{
+
+    .chartWrapper {
         max-width: 20rem;
     }
 }
-@media  screen and  (max-width: 1650px) {
-    .historicMeasurements{
+
+@media screen and (max-width: 1650px) {
+    .historicMeasurements {
         width: 100%;
         margin: 18px;
     }
-    .currentMeasurements{
+
+    .currentMeasurements {
         width: 100%;
         margin: 18px;
     }
-    .info{
+
+    .info {
         width: 100%;
         margin: 18px;
 
     }
 }
-@media  screen and  (min-width: 2500px) {
-    .info{
-        
+
+@media screen and (min-width: 2500px) {
+    .info {
+
         margin: 2rem;
     }
 }

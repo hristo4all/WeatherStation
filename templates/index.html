@@ -10,12 +10,12 @@
     <link rel="stylesheet" href="../static/main.css">
     <script type="text/javascript" src="//code.jquery.com/jquery-1.4.2.min.js"></script>
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.5/socket.io.min.js"></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    
-   <script type="text/javascript" src="../static/main.js"></script>
-    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+
+    <script type="text/javascript" src="../static/main.js"></script>
+
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
 
             // Use weather namespace.
@@ -28,7 +28,7 @@
 
             var historicTemp = [];
             var historicPressure = [];
-            var historicHumidity = []; 
+            var historicHumidity = [];
             var dateSpan = [];
             var historicData = JSON.parse('{{content | tojson | safe}}');// perform a check if the file loaded 
             //console.log(historicData);
@@ -36,7 +36,7 @@
             console.log(data)
             //console.log(data.length);
             //console.log(data.measurements[0].date);
-            for(i=0;i<data.measurements.length;i++){
+            for (i = 0; i < data.measurements.length; i++) {
                 dateSpan.push(data.measurements[i].date);
                 historicTemp.push(data.measurements[i].temperature);
                 historicPressure.push(data.measurements[i].pressure);
@@ -44,39 +44,42 @@
             }
             //console.log(historicTemp);
 
-            
+
             // Connect to the Socket.IO server.
             var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port + namespace);
 
             // Event handler for new connections.
-            socket.on('connect', function() {
+            socket.on('connect', function () {
                 socket.emit('my_event', {
                     data: 'I\'m connected!'
                 });
             });
 
             // Event handler for server sent data.
-            socket.on('my_response', function(msg) {
+            socket.on('my_response', function (msg) {
                 $('#Temperature').text(`${msg.T}C`);
                 $('#Pressure').text(`${msg.P}PSI`);
                 $('#Humidity').text(`${msg.H}%RH`);
                 $('#Time').text(msg.S);
 
-                var today =  new Date(msg.S);
+                var today = new Date(msg.S);
                 //console.log(today.getMinutes());
-                if(msg.S && Object.prototype.toString.call(today) === "[object Date]" && !isNaN(today) && today != "Starting...")
-                {
+                if (msg.S && Object.prototype.toString.call(today) === "[object Date]" && !isNaN(today) && today != "Starting...") {
                     //console.log(msg.S);
                     dataSetTemperature.push(msg.T);
                     dataSetPressure.push(msg.P);
                     dataSetHumidity.push(msg.H);
-                    //console.log(today);
+                    console.log("Server time: " + msg.S);
                     dataSet2.push(`${today.getHours()}:${today.getMinutes()}:${today.getSeconds()}`);
+                    dataSet2.filter(n => n !== undefined)
+                    dataSetTemperature.filter(n => n !== undefined)
+                    dataSetPressure.filter(n => n !== undefined)
+                    dataSetHumidity.filter(n => n !== undefined)
                 }
-                else{
+                else {
 
                 }
-                
+
 
 
             });
@@ -89,21 +92,21 @@
             const historicTempChartElement = document.getElementById('historicTempChart');
             const historicPressureChartElement = document.getElementById('historicPressureChart');
             const historicHumidityChartElement = document.getElementById('historicHumidityChart');
-            
+
             const tempChart = new Chart(tempChartElement, {
                 type: 'line',
                 data: {
-                    labels: dataSet2,
+                    labels: [],
                     datasets: [{
                         label: 'Temperature',
-                        data: dataSetTemperature,
+                        data: [],
                         backgroundColor: [
-                            '#def6c4',
+                            '#59aa94',
 
                         ],
                         borderColor: [
 
-                            '#454c3d'
+                            '#59aa94'
                         ],
                         borderWidth: 1,
                     }]
@@ -112,50 +115,50 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#def6c4',
+                            ticks: {
+                                color: '#85FFDE',
                             }
                         },
-                        x:{
+                        x: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#def6c4',
+                            ticks: {
+                                color: '#59aa94',
                             }
                         }
                     },
                     plugins: {
-                        
+
                         legend: {
                             display: true,
                             labels: {
-                                color: '#91a180',
+                                color: '#59aa94',
                                 // This more specific font property overrides the global property
                                 font: {
                                     size: 20,
-                                    
+
                                 }
                             }
                         }
                     }
-                    
-                    
+
+
                 }
             });
 
             const pressureChart = new Chart(pressureChartElement, {
                 type: 'line',
                 data: {
-                    labels: dataSet2,
+                    labels: [],
                     datasets: [{
                         label: 'Pressure',
-                        data: dataSetPressure,
+                        data: [],
                         backgroundColor: [
-                            '#c4f6e6',
+                            '#CAA968',
 
                         ],
                         borderColor: [
 
-                            '#80a1a0'
+                            '#CAA968'
                         ],
                         borderWidth: 1,
                     }]
@@ -164,50 +167,50 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#c4f6e6',
+                            ticks: {
+                                color: '#CAA968',
                             }
                         },
-                        x:{
+                        x: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#c4f6e6',
+                            ticks: {
+                                color: '#CAA968',
                             }
                         }
                     },
                     plugins: {
-                        
+
                         legend: {
                             display: true,
                             labels: {
-                                color: '#c4f6e6',
+                                color: '#CAA968',
                                 // This more specific font property overrides the global property
                                 font: {
                                     size: 20,
-                                    
+
                                 }
                             }
                         }
                     }
-                    
-                    
+
+
                 }
             });
 
             const humidityChart = new Chart(humidityChartElement, {
                 type: 'line',
                 data: {
-                    labels: dataSet2,
+                    labels: [],
                     datasets: [{
                         label: 'Humidity',
-                        data: dataSetHumidity,
+                        data: [],
                         backgroundColor: [
-                            '#443d4c',
+                            '#88CFD3',
 
                         ],
                         borderColor: [
 
-                            '#dcc4f6'
+                            '#88CFD3'
                         ],
                         borderWidth: 1,
                     }]
@@ -216,36 +219,36 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#dcc4f6',
+                            ticks: {
+                                color: '#88CFD3',
                             }
                         },
-                        x:{
+                        x: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#dcc4f6',
+                            ticks: {
+                                color: '#88CFD3',
                             }
                         }
                     },
                     plugins: {
-                        
+
                         legend: {
                             display: true,
                             labels: {
-                                color: '#dcc4f6',
+                                color: '#88CFD3',
                                 // This more specific font property overrides the global property
                                 font: {
                                     size: 20,
-                                    
+
                                 }
                             }
                         }
                     }
-                    
-                    
+
+
                 }
             });
-            
+
             const historicTempChart = new Chart(historicTempChartElement, {
                 type: 'line',
                 data: {
@@ -254,12 +257,12 @@
                         label: 'Historic Temperature',
                         data: historicTemp,
                         backgroundColor: [
-                            '#def6c4',
+                            '#59aa94',
 
                         ],
                         borderColor: [
 
-                            '#454c3d'
+                            '#59aa94'
                         ],
                         borderWidth: 1,
                     }]
@@ -268,33 +271,33 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#def6c4',
+                            ticks: {
+                                color: '#59aa94',
                             }
                         },
-                        x:{
+                        x: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#def6c4',
+                            ticks: {
+                                color: '#59aa94',
                             }
                         }
                     },
                     plugins: {
-                        
+
                         legend: {
                             display: true,
                             labels: {
-                                color: '#91a180',
+                                color: '#59aa94',
                                 // This more specific font property overrides the global property
                                 font: {
                                     size: 20,
-                                    
+
                                 }
                             }
                         }
                     }
-                    
-                    
+
+
                 }
             });
 
@@ -306,12 +309,12 @@
                         label: 'Historic Humidity',
                         data: historicHumidity,
                         backgroundColor: [
-                            '#def6c4',
+                            '#88CFD3',
 
                         ],
                         borderColor: [
 
-                            '#454c3d'
+                            '#88CFD3'
                         ],
                         borderWidth: 1,
                     }]
@@ -320,33 +323,33 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#def6c4',
+                            ticks: {
+                                color: '#88CFD3',
                             }
                         },
-                        x:{
+                        x: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#def6c4',
+                            ticks: {
+                                color: '#88CFD3',
                             }
                         }
                     },
                     plugins: {
-                        
+
                         legend: {
                             display: true,
                             labels: {
-                                color: '#91a180',
+                                color: '#88CFD3',
                                 // This more specific font property overrides the global property
                                 font: {
                                     size: 20,
-                                    
+
                                 }
                             }
                         }
                     }
-                    
-                    
+
+
                 }
             });
 
@@ -358,12 +361,12 @@
                         label: 'Historic Pressure',
                         data: historicPressure,
                         backgroundColor: [
-                            '#def6c4',
+                            '#CAA968',
 
                         ],
                         borderColor: [
 
-                            '#454c3d'
+                            '#CAA968'
                         ],
                         borderWidth: 1,
                     }]
@@ -372,99 +375,128 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#def6c4',
+                            ticks: {
+                                color: '#CAA968',
                             }
                         },
-                        x:{
+                        x: {
                             beginAtZero: true,
-                            ticks:{
-                                color: '#def6c4',
+                            ticks: {
+                                color: '#CAA968',
                             }
                         }
                     },
                     plugins: {
-                        
+
                         legend: {
                             display: true,
                             labels: {
-                                color: '#91a180',
+                                color: '#CAA968',
                                 // This more specific font property overrides the global property
                                 font: {
                                     size: 20,
-                                    
+
                                 }
                             }
                         }
                     }
-                    
-                    
+
+
                 }
             });
 
-            
 
 
-            var updateInterval = 2000;
 
-            function updateChart(count){
+            var updateInterval = 1000;
 
-                if (dataSetTemperature.length > count) {
+            function updateChart(count) {
 
-                    //console.log("time to delete");
+                console.log(dataSet2)
+                console.log(dataSetTemperature)
+                console.log(dataSetPressure)
+                console.log(dataSetHumidity)
+                console.log("update chart")
 
-                    dataSetTemperature.shift();
-                    dataSetPressure.shift();
-                    dataSetHumidity.shift();
-                    dataSet2.shift();
+                dataSet2.filter(n => n !== undefined)
+                dataSetTemperature.filter(n => n !== undefined)
+                dataSetPressure.filter(n => n !== undefined)
+                dataSetHumidity.filter(n => n !== undefined)
 
-                    tempChart.data.labels.shift();
-                    tempChart.data.datasets.forEach((dataSetTemperature) => {
-                        dataSetTemperature.data.shift();
-                    });
+                label = dataSet2.pop()
 
-                    pressureChart.data.labels.shift();
-                    pressureChart.data.datasets.forEach((dataSetPressure) => {
-                        dataSetPressure.data.shift();
-                    });
+                console.log("Label: " + label)
 
-                    humidityChart.data.labels.shift();
-                    humidityChart.data.datasets.forEach((dataSetHumidity) => {
-                        dataSetHumidity.data.shift();
-                    });
-            
-            
-                   
-                }
-                //console.log(dataSet);
-                //console.log("dataset1 popped: "+ dataSet.pop());
-                //console.log("dataset2 popped: "+ dataSet2.pop());
-
-                tempChart.data.labels.push(dataSet2.pop());
+                tempChart.data.labels.push(label);
                 tempChart.data.datasets.forEach((dataset) => {
+                    console.log("updating temp chart")
                     dataset.data.push(dataSetTemperature.pop());
                 });
 
-                pressureChart.data.labels.push(dataSet2.pop());
+                pressureChart.data.labels.push(label);
                 pressureChart.data.datasets.forEach((dataset) => {
                     dataset.data.push(dataSetPressure.pop());
                 });
 
-                humidityChart.data.labels.push(dataSet2.pop());
+                humidityChart.data.labels.push(label);
                 humidityChart.data.datasets.forEach((dataset) => {
                     dataset.data.push(dataSetHumidity.pop());
                 });
+
+                //console.log(dataSet);
+                //console.log("dataset1 popped: "+ dataSet.pop());
+                //console.log("dataset2 popped: "+ dataSet2.pop());
 
                 tempChart.update();
                 pressureChart.update();
                 humidityChart.update();
             }
+            function updateDeleteChart(count) {
+                console.log("lenght of temp dataset: " + dataSetTemperature.length)
 
 
-            setInterval(function(){updateChart(10)}, updateInterval);    
+
+                console.log("time to delete ");
+                //dataSetTemperature.shift();
+                //dataSetPressure.shift();
+                //dataSetHumidity.shift();
+
+                tempChart.data.labels.shift();
+                console.log("temp labels" + tempChart.data.labels)
+                tempChart.data.datasets.forEach((dataSetTemperature) => {
+                    dataSetTemperature.data.shift();
+                });
+                tempChart.update();
 
 
-            
+
+                pressureChart.data.labels.shift();
+                //console.log(pressureChart.data.labels)
+                pressureChart.data.datasets.forEach((dataSetPressure) => {
+                    dataSetPressure.data.shift();
+                });
+                pressureChart.update();
+
+
+                humidityChart.data.labels.shift();
+                humidityChart.data.datasets.forEach((dataSetHumidity) => {
+                    dataSetHumidity.data.shift();
+                });
+                humidityChart.update();
+
+
+
+
+
+
+            }
+
+
+            setInterval(function () { updateChart(10) }, updateInterval);
+            setInterval(function () { updateDeleteChart(10) }, 2200);
+
+
+
         });
     </script>
 
@@ -474,63 +506,77 @@
     <div class="header">Raspberry Pi Weather Station</div>
     </div>
     <div class="container">
-    <!-------------------------------------------------------------------------------------------------->
-        <div class="currentMeasurements">
+        <!-------------------------------------------------------------------------------------------------->
+        <div class="measurements">
             <div class="curHeader">
                 <h2>Current Weather Conditions</h2>
                 <div class="switchWrapper">
                     <label class="switch">
                         <input id="check" type="checkbox" onclick="toggleView()">
                         <span class="slider round"></span>
-                      </label> 
+                    </label>
                 </div>
-            </div> 
+            </div>
 
-            <div class="card" id="card">  
-                <i class=" wi wi-thermometer"></i>
+            <div class="card" id="card">
+                <i class=" wi wi-thermometer temp"></i>
                 <div class="wrapper">
-                    <p class="label">Temperature</p>
-                    <p id="Temperature"></p>
+                    <p class="label temp">Temperature</p>
+                    <p id="Temperature">24.23C</p>
                 </div>
             </div>
-            <div class="card" id="card">  
-                <i class=" wi wi-barometer"></i>
+            <div class="card test pressure" id="card">
+                <i class=" wi wi-barometer pressure"></i>
                 <div class="wrapper">
-                    <p class="label">Pressure</p>
-                    <p id="Pressure"></p>
+                    <p class="label pressure">Pressure</p>
+                    <p id="Pressure">1002.12PSI</p>
                 </div>
             </div>
-            <div class="card" id="card">  
-                <i class=" wi wi-humidity"></i>
+            <div class="card" id="card">
+                <i class=" wi wi-humidity humidity"></i>
                 <div class="wrapper">
-                    <p class="label">Humidity</p>
-                    <p id="Humidity"></p>
+                    <p class="label humidity">Humidity</p>
+                    <p id="Humidity">52%</p>
                 </div>
             </div>
-            <div class="card" id="card">  
-                <i class=" wi wi-time-5"></i>
+            <div class="card" id="card">
+                <i class=" wi wi-time-5 time"></i>
                 <div class="wrapper">
-                    <p class="label">Time</p>
-                    <p id="Time"></p>
+                    <p class="label time">Time</p>
+                    <p id="Time">12:27</p>
                 </div>
             </div>
-            <div class="chartWrapper">
-                <canvas id="tempChart" class="chart"></canvas>
+            <div class="chartContainer">
+                <div class="chartWrapper">
+                    <canvas id="tempChart" class="chart"></canvas>
+                </div>
+                <div class="chartWrapper">
+                    <canvas id="pressureChart" class="chart"></canvas>
+                </div>
+                <div class="chartWrapper">
+                    <canvas id="humidityChart" class="chart"></canvas>
+                </div>
             </div>
-            <div class="chartWrapper">
-                <canvas id="pressureChart" class="chart"></canvas>
-            </div>
-            <div class="chartWrapper">
-                <canvas id="humidityChart" class="chart"></canvas>
-            </div>
-            
         </div>
         <!-------------------------end of currentMeasurements------------------------------------------------------------------------->
         <div class="info">
-                
+            <div class="curHeader">
+                <h2>Forecast for Tomorrow</h2>
+            </div>
+            <div class="card"  style="display: visible;">
+                <i class=" wi wi-thermometer tempPredict"></i>
+                <div class="wrapper">
+                    <p class="label tempPredict">Temperature</p>
+                    <p id="Temperature">24.3C</p>
+                </div>
+            </div>
         </div>
         <!-------------------------end of info------------------------------------------------------------------------->
-        <div class="historicMeasurements">
+        <div class="measurements">
+            <div class="curHeader">
+                <h2>Historic Weather Conditions</h2>
+            </div>
+            <div class="chartContainer">
                 <div class="historicChartWrapper">
                     <canvas id="historicTempChart" class="historicChart"></canvas>
                 </div>
@@ -540,9 +586,12 @@
                 <div class="historicChartWrapper">
                     <canvas id="historicHumidityChart" class="historicChart"></canvas>
                 </div>
+            </div>
         </div>
         <!-------------------------historicMeasurements------------------------------------------------------------------------->
-    </div><!---end of container -->
-    
+    </div>
+    <!---end of container -->
+
 </body>
+
 </html>
