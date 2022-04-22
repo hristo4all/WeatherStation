@@ -119,6 +119,40 @@ body {
     border: 5px solid #a191f9;
 }
 
+.Predictioncard {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--body);
+    width: 18rem;
+    height: 7rem;
+    margin: 1rem;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: 5px solid transparent;
+    border-radius: 17px;
+    flex-basis: 0;
+}
+
+.Predictioncard:hover {
+    border: 5px solid #a191f9;
+}
+
+.predictcard {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--body);
+    width: 18rem;
+    height: 7rem;
+    margin: 1rem;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border: 5px solid transparent;
+    border-radius: 17px;
+    flex-basis: 0;
+}
+
+.predictcard:hover {
+    border: 5px solid #a191f9;
+}
+
 i {
     font-size: 4rem;
     color: var(--header_secondary);
@@ -213,7 +247,8 @@ i {
     width: 30%;
 
 }
-.predict{
+
+.predict {
     display: visible !important;
 }
 

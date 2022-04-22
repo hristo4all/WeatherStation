@@ -26,3 +26,6 @@ function toggleView() {
         }
     }
 }
+function getPrediction(){
+    
+}
